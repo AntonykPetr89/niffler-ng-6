@@ -12,17 +12,11 @@ public class ProfilePage {
     private final SelenideElement confirmCategoryUnArchivedButton = $x("//button[text()='Unarchive']");
     private final ElementsCollection categoryList = $$(".MuiChip-root");
     private final SelenideElement archiveCategoryCheckbox = $("input[type='checkbox']");
-    private final SelenideElement successArchiveMessage = $x("//div[@class='MuiAlert-message css-1xsto0d']");
-    private final SelenideElement successUnArchiveMessage = $x("//div[contains(@class,'MuiTypography-root MuiTypography-body1')]");
+    private final SelenideElement successArchiveMessage = $x("//div[contains(text(), 'is archived')]");
+    private final SelenideElement successUnArchiveMessage = $x("//div[contains(text(), 'is unarchived')]");
 
     public ProfilePage clickArchivedCategoryButton(String categoryName) {
-        for (int i = 0; i < categoryList.size(); i++) {
-            if (categoryList.get(i).text().equals(categoryName)) {
-                SelenideElement archiveButtonInTable = categoryList.get(i).parent().$(".MuiIconButton-sizeMedium[aria-label='Archive category']");
-                archiveButtonInTable.click();
-                break;
-            }
-        }
+        categoryList.filter(text(categoryName)).first().parent().$(".MuiIconButton-sizeMedium[aria-label='Archive category']").click();
         return this;
     }
 
@@ -32,13 +26,7 @@ public class ProfilePage {
     }
 
     public ProfilePage clickUnArchivedCategoryButton(String categoryName) {
-        for (int i = 0; i < categoryList.size(); i++) {
-            if (categoryList.get(i).text().equals(categoryName)) {
-                SelenideElement unArchiveButtonInTable = categoryList.get(i).parent().$("button[aria-label='Unarchive category']");
-                unArchiveButtonInTable.click();
-                break;
-            }
-        }
+        categoryList.filter(text(categoryName)).first().parent().$("button[aria-label='Unarchive category']").click();
         return this;
     }
 

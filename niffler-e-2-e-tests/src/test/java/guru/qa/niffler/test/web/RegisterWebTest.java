@@ -20,7 +20,7 @@ public class RegisterWebTest {
     @Test
     void shouldRegisterNewUser() {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
-                .createNewAccountClick();
+                .clickOnCreateNewAccountButton();
         registerPage
                 .setUsername(faker.name().username())
                 .setPassword(password)
@@ -32,7 +32,7 @@ public class RegisterWebTest {
     @Test
     void shouldNotRegisterUserWithExistingUsername() {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
-                .createNewAccountClick();
+                .clickOnCreateNewAccountButton();
         registerPage
                 .setUsername(REGISTERED_USER)
                 .setPassword(password)
@@ -44,7 +44,7 @@ public class RegisterWebTest {
     @Test
     void shouldShowErrorIfPasswordAndConfirmPasswordAreNotEqual() {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
-                .createNewAccountClick();
+                .clickOnCreateNewAccountButton();
         registerPage
                 .setUsername(REGISTERED_USER)
                 .setPassword(faker.internet().password(3, 10))

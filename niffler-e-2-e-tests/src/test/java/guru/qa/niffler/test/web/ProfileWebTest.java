@@ -17,7 +17,6 @@ public class ProfileWebTest {
             username = "Petr",
             archived = false
     )
-
     @Test
     void archivedCategoryShouldNotVisibleInCategoriesList(CategoryJson category) throws InterruptedException {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
@@ -33,7 +32,6 @@ public class ProfileWebTest {
             username = "Petr",
             archived = true
     )
-
     @Test
     void activeCategoryShouldBeVisibleInCategoriesList(CategoryJson category) throws InterruptedException {
         Selenide.open(CFG.frontUrl(), LoginPage.class)

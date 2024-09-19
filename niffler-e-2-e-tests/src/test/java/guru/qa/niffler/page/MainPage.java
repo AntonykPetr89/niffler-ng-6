@@ -29,11 +29,9 @@ public class MainPage {
         tableRows.find(text(spendingDescription)).should(visible);
     }
 
-    public void checkStatisticsMessageIsVisible() {
+    public void checkIsLoaded(){
         statisticsMessage.shouldBe(visible);
-    }
-
-    public void checkHistoryOfSpendingMessageIsVisible() {
         historyOfSpendingMessage.shouldBe(visible);
     }
+
 }
