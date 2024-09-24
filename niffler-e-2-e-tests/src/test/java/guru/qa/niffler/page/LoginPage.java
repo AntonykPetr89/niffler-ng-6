@@ -20,7 +20,7 @@ public class LoginPage {
         return new MainPage();
     }
 
-    public LoginPage createNewAccountClick() {
+    public LoginPage clickOnCreateNewAccountButton() {
         createNewAccountButton.click();
         return new LoginPage();
     }

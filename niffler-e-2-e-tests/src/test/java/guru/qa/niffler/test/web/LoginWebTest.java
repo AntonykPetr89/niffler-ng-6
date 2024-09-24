@@ -16,14 +16,13 @@ public class LoginWebTest {
     String username = faker.internet().password(3, 10);
     private static final String REGISTERED_USER = "Petr";
     private static final String PASSWORD_USER = "A97f092a";
-    final String wrongCredentials = "Неверные учетные данные пользователя";
+    private static final String WRONG_CREDENTIALS = "Неверные учетные данные пользователя";
 
     @Test
     void mainPageShouldBeDisplayedAfterSuccessLogin() {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
                 .login(REGISTERED_USER, PASSWORD_USER);
-        mainPage.checkHistoryOfSpendingMessageIsVisible();
-        mainPage.checkStatisticsMessageIsVisible();
+        mainPage.checkIsLoaded();
     }
 
     @Test
@@ -31,6 +30,6 @@ public class LoginWebTest {
         Selenide.open(CFG.frontUrl(), LoginPage.class)
                 .login(username, password);
         loginPage
-                .checkErrorForm(wrongCredentials);
+                .checkErrorForm(WRONG_CREDENTIALS);
     }
 }
