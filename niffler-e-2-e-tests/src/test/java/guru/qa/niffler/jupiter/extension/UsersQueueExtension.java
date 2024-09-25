@@ -71,7 +71,7 @@ public class UsersQueueExtension implements
     @Override
     public void beforeTestExecution(ExtensionContext context) {
         Arrays.stream(context.getRequiredTestMethod().getParameters())
-                .filter(p -> AnnotationSupport.isAnnotated(p, UserType.class))
+                .filter(p -> AnnotationSupport.isAnnotated(p, UserType.class) && p.getType().isAssignableFrom(StaticUser.class))
                 .forEach(p -> {
                     UserType userType = p.getAnnotation(UserType.class);
                     Queue<StaticUser> queue = getQueueByUserType(userType.value());
@@ -110,11 +110,13 @@ public class UsersQueueExtension implements
                 context.getUniqueId(),
                 Map.class
         );
-        for (Map.Entry<UserType, StaticUser> e : map.entrySet()) {
-            UserType userType = e.getKey();
-            StaticUser user = e.getValue();
-            Queue<StaticUser> queue = getQueueByUserType(userType.value());
-            queue.add(user);
+        if (map != null) {
+            for (Map.Entry<UserType, StaticUser> e : map.entrySet()) {
+                UserType userType = e.getKey();
+                StaticUser user = e.getValue();
+                Queue<StaticUser> queue = getQueueByUserType(userType.value());
+                queue.add(user);
+            }
         }
     }
 
