@@ -23,15 +23,18 @@ public class CategoryExtension implements
     public void beforeEach(ExtensionContext context) throws Exception {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
                 .ifPresent(userAnno -> {
-                    if (userAnno.categories().length > 0) {
-                        Category anno = userAnno.categories()[0];
+                    if (userAnno.categories().length > 0) {  // Проверяем, что массив не пуст
+                        Category anno = userAnno.categories()[0];  // Берём только первый элемент
                         CategoryJson category = new CategoryJson(
                                 null,
-                                anno.title().equals("") ? randomCategoryName() : anno.title(),
+                                anno.name().equals("") ? randomCategoryName() : anno.name(),
                                 userAnno.username(),
                                 anno.archived()
                         );
+                        // Отправляем запрос на создание категории
                         CategoryJson createdCategory = spendDbClient.createCategory(category);
+
+                        // Сохраняем созданную категорию в контекст
                         context.getStore(NAMESPACE).put(
                                 context.getUniqueId(),
                                 createdCategory
@@ -43,20 +46,19 @@ public class CategoryExtension implements
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
         CategoryJson category = context.getStore(NAMESPACE).get(context.getUniqueId(), CategoryJson.class);
+        // Если категория существует удаляем ее после теста
         if (category != null) {
-            spendDbClient.deleteCategory(CategoryEntity.fromJson(category));
+            spendDbClient.deleteCategory(category);
         }
     }
 
     @Override
-    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws
-            ParameterResolutionException {
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return parameterContext.getParameter().getType().isAssignableFrom(CategoryJson.class);
     }
 
     @Override
-    public CategoryJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws
-            ParameterResolutionException {
+    public CategoryJson resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), CategoryJson.class);
     }
 }
