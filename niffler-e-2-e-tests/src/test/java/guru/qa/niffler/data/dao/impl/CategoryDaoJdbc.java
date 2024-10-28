@@ -42,6 +42,7 @@ public class CategoryDaoJdbc implements CategoryDao {
         }
     }
 
+
     @Override
     public Optional<CategoryEntity> findById(UUID id) {
         try (Connection connection = Databases.connection(CFG.spendJdbcUrl())) {

@@ -28,12 +28,16 @@ public class SpendDbClient {
         );
     }
 
-    public Optional<SpendEntity> findSpendById(UUID id) {
-        return spendDao.findById(id);
+    public SpendJson findSpendById(SpendJson spendJson) {
+        Optional<SpendEntity> entity = spendDao.findById(spendJson.id());
+        return entity.map(SpendJson::fromEntity).orElseThrow();
     }
 
-    public List<SpendEntity> findAllSpendsByUsername(String username) {
-        return spendDao.findAllByUsername(username);
+    public List<SpendJson> findAllSpendsByUsername(String username) {
+        List<SpendEntity> spendEntityList = spendDao.findAllByUsername(username);
+        return spendEntityList.stream()
+                .map(SpendJson::fromEntity)
+                .toList();
     }
 
     public void deleteSpend(SpendEntity spend) {
@@ -41,15 +45,17 @@ public class SpendDbClient {
     }
 
     public CategoryJson createCategory(CategoryJson category) {
-        return CategoryJson.fromEntity(categoryDao.create(CategoryEntity.fromJson(category)));
+        CategoryEntity entity = CategoryEntity.fromJson(category);
+        return CategoryJson.fromEntity(categoryDao.create(entity));
     }
 
     public Optional<CategoryEntity> findCategoryById(UUID id) {
         return categoryDao.findById(id);
     }
 
-    public Optional<CategoryEntity> findByUsernameAndCategoryName(String username, String categoryName) {
-        return categoryDao.findByUsernameAndCategoryName(username, categoryName);
+    public CategoryJson findCategoryByUsernameAndCategoryName(String username, String categoryName) {
+        Optional<CategoryEntity> categoryEntity = categoryDao.findByUsernameAndCategoryName(username, categoryName);
+        return categoryEntity.map(CategoryJson::fromEntity).orElseThrow();
     }
 
     public void deleteCategory(CategoryEntity category) {
