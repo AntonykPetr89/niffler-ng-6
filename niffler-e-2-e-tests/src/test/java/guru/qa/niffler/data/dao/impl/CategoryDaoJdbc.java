@@ -18,7 +18,7 @@ public class CategoryDaoJdbc implements CategoryDao {
     }
 
     @Override
-    public CategoryEntity create(CategoryEntity category) {
+    public CategoryEntity createCategory(CategoryEntity category) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO category (username, name, archived) " +
                         "VALUES (?, ?, ?)",
@@ -117,7 +117,7 @@ public class CategoryDaoJdbc implements CategoryDao {
     }
 
     @Override
-    public void delete(CategoryEntity category) {
+    public void deleteCategory(CategoryEntity category) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM category WHERE id = ?"
         )) {
