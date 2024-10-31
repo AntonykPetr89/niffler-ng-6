@@ -18,7 +18,7 @@ public class SpendDaoJdbc implements SpendDao {
     }
 
     @Override
-    public SpendEntity create(SpendEntity spend) {
+    public SpendEntity createSpend(SpendEntity spend) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO spend (username, spend_date, currency, amount, description, category_id) " +
                         "VALUES ( ?, ?, ?, ?, ?, ?)",
@@ -102,7 +102,7 @@ public class SpendDaoJdbc implements SpendDao {
     }
 
     @Override
-    public void delete(SpendEntity spend) {
+    public void deleteSpend(SpendEntity spend) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM spend WHERE id = ?"
         )) {
