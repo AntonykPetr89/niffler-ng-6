@@ -5,6 +5,8 @@ import guru.qa.niffler.data.entity.userdata.UserEntity;
 import guru.qa.niffler.model.CurrencyValues;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +21,7 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     @Override
     public UserEntity createUser(UserEntity user) {
         try (PreparedStatement ps = connection.prepareStatement(
-                "INSERT INTO user (username, currency, firstname, surname, photo, photo_small, full_name) " +
+                "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name) " +
                         "VALUES ( ?, ?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         )) {
@@ -49,7 +51,7 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     @Override
     public Optional<UserEntity> findById(UUID id) {
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM user WHERE id = ?"
+                "SELECT * FROM \"user\" WHERE id = ?"
         )) {
             ps.setObject(1, id);
             ps.execute();
@@ -77,7 +79,7 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     @Override
     public Optional<UserEntity> findByUsername(String username) {
         try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT * FROM user WHERE username = ?"
+                "SELECT * FROM \"user\" WHERE username = ?"
         )) {
             ps.setObject(1, username);
             ps.execute();
@@ -103,9 +105,37 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     }
 
     @Override
+    public List<UserEntity> findAll() {
+        List<UserEntity> users = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT * FROM \"user\""
+        )) {
+            try (ResultSet rs = ps.getResultSet()) {
+                while (rs.next()) {
+                    UserEntity ue = new UserEntity();
+
+                    ue.setId(rs.getObject("id", UUID.class));
+                    ue.setUsername(rs.getString("username"));
+                    ue.setCurrency(rs.getObject("currency", CurrencyValues.class));
+                    ue.setFirstname(rs.getString("firstname"));
+                    ue.setSurname(rs.getString("surname"));
+                    ue.setPhoto(rs.getBytes("photo"));
+                    ue.setPhoto(rs.getBytes("photo_small"));
+                    ue.setFullname(rs.getString("full_name"));
+
+                    users.add(ue);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
+    }
+
+    @Override
     public void deleteUser(UserEntity user) {
         try (PreparedStatement ps = connection.prepareStatement(
-                "DELETE FROM user WHERE id = ?"
+                "DELETE FROM \"user\" WHERE id = ?"
         )) {
             ps.setObject(1, user.getId());
             ps.executeUpdate();
