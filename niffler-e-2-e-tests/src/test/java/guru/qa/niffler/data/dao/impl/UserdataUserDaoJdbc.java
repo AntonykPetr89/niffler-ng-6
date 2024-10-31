@@ -1,7 +1,7 @@
 package guru.qa.niffler.data.dao.impl;
 
 import guru.qa.niffler.data.dao.UserdataUserDao;
-import guru.qa.niffler.data.entity.user.UserEntity;
+import guru.qa.niffler.data.entity.userdata.UserEntity;
 import guru.qa.niffler.model.CurrencyValues;
 
 import java.sql.*;
@@ -17,7 +17,7 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     }
 
     @Override
-    public UserEntity create(UserEntity user) {
+    public UserEntity createUser(UserEntity user) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO user (username, currency, firstname, surname, photo, photo_small, full_name) " +
                         "VALUES ( ?, ?, ?, ?, ?, ?, ?)",
@@ -103,7 +103,7 @@ public class UserdataUserDaoJdbc implements UserdataUserDao {
     }
 
     @Override
-    public void delete(UserEntity user) {
+    public void deleteUser(UserEntity user) {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM user WHERE id = ?"
         )) {
