@@ -26,7 +26,7 @@ public class UserdataUserDaoSpringJdbc implements UserdataUserDao {
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name" +
+                    "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name) " +
                             "VALUES (?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS
             );
@@ -39,8 +39,7 @@ public class UserdataUserDaoSpringJdbc implements UserdataUserDao {
             ps.setString(7, user.getFullname());
             return ps;
         }, kh);
-
-        final  UUID generatedKey =(UUID) kh.getKeys().get("id");
+        final UUID generatedKey = (UUID) kh.getKeys().get("id");
         user.setId(generatedKey);
         return user;
     }
@@ -64,6 +63,5 @@ public class UserdataUserDaoSpringJdbc implements UserdataUserDao {
 
     @Override
     public void deleteUser(UserEntity user) {
-
     }
 }
