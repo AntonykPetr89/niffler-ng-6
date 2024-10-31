@@ -2,9 +2,9 @@ package guru.qa.niffler.data.dao;
 
 import guru.qa.niffler.data.entity.spend.CategoryEntity;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 public interface CategoryDao {
     CategoryEntity createCategory(CategoryEntity category);
@@ -14,6 +14,8 @@ public interface CategoryDao {
     Optional<CategoryEntity> findByUsernameAndCategoryName(String username, String categoryName);
 
     List<CategoryEntity> findAllByUsername(String username);
+
+    List<CategoryEntity> findAll();
 
     void deleteCategory(CategoryEntity category);
 }
